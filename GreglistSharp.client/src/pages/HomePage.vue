@@ -1,44 +1,80 @@
 <template>
-  <div class="home flex-grow-1 d-flex flex-column align-items-center justify-content-center">
-    <div class="home-card p-5 bg-white rounded elevation-3">
-      <img
-        src="https://bcw.blob.core.windows.net/public/img/8600856373152463"
-        alt="CodeWorks Logo"
-        class="rounded-circle"
-      >
-      <h1 class="my-5 bg-dark text-white p-3 rounded text-center">
-        Vue 3 Starter
-      </h1>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-3 col-md-4 my-3" v-for="c in classifieds" :key="c.id">
+        <div v-if="c.listingType == 'Car'">
+          <router-link :to="{
+            name: 'Details',
+            params: {
+              id: c.id
+            }
+          }">
+            <CarCard :car="c.listing" :seller="c.seller" @deleteClassified="deleteClassified(c.id)" />
+          </router-link>
+        </div>
+        <div v-if="c.listingType == 'Job'">
+          <router-link :to="{
+            name: 'Details',
+            params: {
+              id: c.id
+            }
+          }">
+            <JobCard :job="c.listing" :seller="c.seller" @deleteClassified="deleteClassified(c.id)" />
+          </router-link>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import { computed } from '@vue/reactivity';
+import { onMounted } from 'vue';
+import { AppState } from '../AppState.js';
+import CarCard from '../components/CarCard.vue';
+import { carsService } from '../services/CarsService.js';
+import { classifiedsService } from '../services/ClassifiedsService.js';
+import Pop from '../utils/Pop.js';
+
 export default {
   setup() {
-    return {}
-  }
+
+    async function getClassifieds() {
+      try {
+        await classifiedsService.getClassifieds()
+      } catch (error) {
+        Pop.error(error, '[GettingClassifieds]')
+      }
+    }
+    async function getCars() {
+      try {
+        await carsService.getCars()
+      } catch (error) {
+        Pop.error(error, '[GettingClassifieds]')
+      }
+    }
+
+    onMounted(() => {
+      getCars()
+    })
+
+    return {
+      classifieds: computed(() => AppState.cars),
+      async deleteClassified(id) {
+        try {
+          const yes = await Pop.confirm('Delete the Listing?')
+          if (!yes) { return }
+          await classifiedsService.deleteClassified(id)
+        } catch (error) {
+          Pop.error(error, '[Deleting Classified]')
+        }
+      }
+    };
+  },
+  components: { CarCard }
 }
 </script>
 
 <style scoped lang="scss">
-.home {
-  display: grid;
-  height: 80vh;
-  place-content: center;
-  text-align: center;
-  user-select: none;
 
-  .home-card {
-    width: 50vw;
-
-    >img {
-      height: 200px;
-      max-width: 200px;
-      width: 100%;
-      object-fit: contain;
-      object-position: center;
-    }
-  }
-}
 </style>

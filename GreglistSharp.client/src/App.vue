@@ -1,40 +1,84 @@
 <template>
-  <header>
-    <Navbar />
-  </header>
-  <main>
-    <router-view />
+  <main class="container-fluid">
+    <div class="row">
+      <div class="col-md-2 d-none d-md-block bg-dark text-light sidebar">
+
+        <router-link class="navbar-brand d-flex" :to="{ name: 'Home' }">
+          <div class="d-flex flex-column align-items-center border-bottom">
+            <h1>GregsList</h1>
+          </div>
+        </router-link>
+        <router-link class="navbar-brand d-flex" :to="{ name: 'Home' }">
+          <div class="d-flex flex-column align-items-center mt-3">
+            <h3>Show Cars</h3>
+          </div>
+        </router-link>
+        <button class="btn" data-bs-target="#classifiedsCanvas" data-bs-toggle="offcanvas" v-if="account.id">
+          <span class="text-success lighten-30 selectable text-uppercase">
+            Add a Listing
+          </span>
+        </button>
+        <!-- TODO add Cars Page -->
+
+        <div class="mt-login">
+          <Login />
+        </div>
+      </div>
+      <div class="col-md-10 main-content">
+        <router-view />
+      </div>
+    </div>
   </main>
-   <footer class="bg-dark text-light">
-    Made with 💖 by CodeWorks
-  </footer>
+
+
+  <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
+    id="classifiedsCanvas" aria-labelledby="classifiedsCanvasLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="classifiedsCanvasLabel">Add your Listing</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <ClassifiedForm />
+    </div>
+  </div>
 </template>
 
 <script>
 import { computed } from 'vue'
 import { AppState } from './AppState'
+import ClassifiedForm from './components/ClassifiedForm.vue'
+import Login from './components/Login.vue'
 import Navbar from './components/Navbar.vue'
 
 export default {
   setup() {
     return {
-      appState: computed(() => AppState)
+      appState: computed(() => AppState),
+      account: computed(() => AppState.account)
     }
   },
-  components: { Navbar }
+  components: { Navbar, Login, ClassifiedForm }
 }
 </script>
+
+
 <style lang="scss">
 @import "./assets/scss/main.scss";
 
-:root{
-  --main-height: calc(100vh - 32px - 64px);
+.sidebar {
+  height: 100vh;
 }
 
+.main-content {
+  height: 100vh;
+  overflow-y: auto;
+}
 
-footer {
-  display: grid;
-  place-content: center;
-  height: 32px;
+.mt-login {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  margin-left: 1rem;
+  margin-bottom: 1rem;
 }
 </style>

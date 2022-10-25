@@ -21,4 +21,19 @@ public class CarsService
   {
     return _carsRepo.CreateCar(carData);
   }
+
+  internal Car UpdateCar(Car carData, int id)
+  {
+    return _carsRepo.UpdateCar(carData, id);
+  }
+
+  internal Car GetCarById(int id)
+  {
+    return _carsRepo.GetCarById(id);
+  }
+
+  internal Car DeleteCar(int id)
+  {
+    return _carsRepo.DeleteCar(id);
+  }
 }

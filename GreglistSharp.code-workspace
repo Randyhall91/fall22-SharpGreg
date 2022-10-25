@@ -1,4 +1,3 @@
-
 {
   "folders": [
     {
@@ -8,7 +7,11 @@
     {
       "path": "GreglistSharp",
       "name": "server"
-    },{"path":".github/workflows", "name":"workflows"}
+    },
+    {
+      "path": ".github/workflows",
+      "name": "workflows"
+    }
   ],
   "settings": {
     "editor.suggestSelection": "first",
@@ -42,12 +45,6 @@
       "editor.defaultFormatter": "Vue.volar"
     },
     "workbench.colorCustomizations": {
-      "activityBar.activeBackground": "#b690ab",
-      "activityBar.background": "#b690ab",
-      "activityBar.foreground": "#15202b",
-      "activityBar.inactiveForeground": "#15202b99",
-      "activityBarBadge.background": "#e2e6d9",
-      "activityBarBadge.foreground": "#15202b",
       "commandCenter.border": "#15202b99",
       "sash.hoverBorder": "#b690ab",
       "statusBar.background": "#a27194",
